@@ -42,10 +42,7 @@
       pointer-events: none;
     }
 
-    .envelope-scene {
-      perspective: 1200px;
-      position: relative;
-    }
+    .envelope-scene { perspective: 1200px; position: relative; }
 
     .envelope {
       position: relative;
@@ -80,9 +77,7 @@
       z-index: 5;
       border-radius: 12px 12px 0 0;
     }
-    .envelope-flap.open {
-      transform: rotateX(180deg);
-    }
+    .envelope-flap.open { transform: rotateX(180deg); }
 
     .letter {
       position: absolute;
@@ -140,18 +135,12 @@
     }
 
     /* ===== CANVAS 3D ===== */
-    #canvas-container {
-      position: fixed;
-      inset: 0;
-      z-index: 1;
-    }
+    #canvas-container { position: fixed; inset: 0; z-index: 1; }
 
     /* ===== HEADER ===== */
     #header {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
+      top: 0; left: 0; right: 0;
       z-index: 10;
       text-align: center;
       padding: 30px 20px 0;
@@ -184,15 +173,9 @@
       line-height: 1.1;
       margin-bottom: 8px;
     }
-    #header h1 span {
-      color: #f472b6;
-    }
+    #header h1 span { color: #f472b6; }
 
-    #header p {
-      color: rgba(249,168,212,0.7);
-      font-size: 0.85rem;
-      font-weight: 400;
-    }
+    #header p { color: rgba(249,168,212,0.7); font-size: 0.85rem; font-weight: 400; }
 
     /* ===== MODAL ===== */
     .modal-overlay {
@@ -224,9 +207,7 @@
       transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
       box-shadow: 0 40px 100px rgba(236,72,153,0.4), 0 0 0 1px rgba(255,255,255,0.6);
     }
-    .modal-overlay.open .modal-card {
-      transform: scale(1) translateY(0);
-    }
+    .modal-overlay.open .modal-card { transform: scale(1) translateY(0); }
 
     .modal-img-ring {
       width: 100px;
@@ -329,9 +310,10 @@
         <div class="envelope-body">
           <div class="letter">
             <div class="letter-content">
-              <span class="heart-icon">💐</span>
+              <span class="heart-icon">🌙</span>
+              <br><br>
               <h2>Para Gigi</h2>
-              <p>Un ramo especial para ti...</p>
+              <p>"No sabía cómo regalarte flores...<br>así que te hice un ramo de maquillaje."<br><br><span style="font-size: 10px; opacity: 0.6;">— De Cusco para Puno ✨</span></p>
             </div>
           </div>
           <div class="envelope-flap" id="envelopeFlap"></div>
@@ -341,6 +323,19 @@
     </div>
     <p class="envelope-hint">Toca para abrir</p>
   </div>
+
+  <!-- Música de fondo -->
+  <audio id="bg-music" loop>
+    <source src="https://www.image2url.com/r2/default/audio/1792997196869-a76341f3-7c5e-4163-a906-ef3f3614c2d8.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    const audio = document.getElementById('bg-music');
+    document.getElementById('envelope-overlay').addEventListener('click', () => {
+      audio.volume = 0.3;
+      audio.play().catch(e => console.log("Audio bloqueado"));
+    });
+  </script>
 
   <!-- CONTENEDOR 3D -->
   <div id="canvas-container"></div>
@@ -441,14 +436,14 @@
     scene.fog = new THREE.FogExp2(0x0a0612, 0.012);
 
     const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 200);
-    camera.position.set(0, 2, 14);
+    camera.position.set(0, 2.5, 15);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setClearColor(0x0a0612, 1);
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.1;
+    renderer.toneMappingExposure = 1.0;
     container.appendChild(renderer.domElement);
 
     // ===== CONTROLES =====
@@ -458,31 +453,31 @@
     controls.enableZoom = true;
     controls.enablePan = false;
     controls.minDistance = 8;
-    controls.maxDistance = 20;
+    controls.maxDistance = 22;
     controls.minPolarAngle = Math.PI * 0.25;
     controls.maxPolarAngle = Math.PI * 0.75;
     controls.autoRotate = true;
     controls.autoRotateSpeed = 0.8;
-    controls.target.set(0, 1.5, 0);
+    controls.target.set(0, 2, 0);
 
     // ===== LUCES =====
-    const ambient = new THREE.AmbientLight(0xfdf2f8, 0.6);
+    const ambient = new THREE.AmbientLight(0xfdf2f8, 0.7);
     scene.add(ambient);
 
     const keyLight = new THREE.DirectionalLight(0xffffff, 2.5);
     keyLight.position.set(5, 10, 7);
     scene.add(keyLight);
 
-    const rimLight = new THREE.DirectionalLight(0xf472b6, 2);
+    const rimLight = new THREE.DirectionalLight(0xf472b6, 1.5);
     rimLight.position.set(-6, 4, -5);
     scene.add(rimLight);
 
-    const fillLight = new THREE.PointLight(0xa855f7, 1.5, 30);
+    const fillLight = new THREE.PointLight(0xa855f7, 1.2, 30);
     fillLight.position.set(0, -3, 5);
     scene.add(fillLight);
 
-    const topGlow = new THREE.PointLight(0xec4899, 2, 25);
-    topGlow.position.set(0, 8, 0);
+    const topGlow = new THREE.PointLight(0xec4899, 1.5, 25);
+    topGlow.position.set(0, 10, 0);
     scene.add(topGlow);
 
     // ===== PARTÍCULAS DE FONDO (GALAXIA) =====
@@ -525,13 +520,58 @@
     }
     const galaxy = createGalaxy();
     scene.add(galaxy);
+    
+    // ===== CORAZONES FLOTANDO =====
+    function createHearts() {
+      const heartShape = new THREE.Shape();
+      heartShape.moveTo(0, 0.5);
+      heartShape.bezierCurveTo(0, 0.5, -0.5, 1.5, -1.2, 1.5);
+      heartShape.bezierCurveTo(-2.5, 1.5, -2.5, -0.5, -2.5, -0.5);
+      heartShape.bezierCurveTo(-2.5, -1.5, -1.2, -2.5, 0, -3.5);
+      heartShape.bezierCurveTo(1.2, -2.5, 2.5, -1.5, 2.5, -0.5);
+      heartShape.bezierCurveTo(2.5, -0.5, 2.5, 1.5, 1.2, 1.5);
+      heartShape.bezierCurveTo(0.5, 1.5, 0, 0.5, 0, 0.5);
+
+      const extrudeSettings = { depth: 0.2, bevelEnabled: true, bevelSegments: 2, steps: 2, bevelSize: 0.1, bevelThickness: 0.1 };
+      const geo = new THREE.ExtrudeGeometry(heartShape, extrudeSettings);
+      geo.center();
+
+      const mat = new THREE.MeshStandardMaterial({
+        color: 0xf472b6,
+        emissive: 0xec4899,
+        emissiveIntensity: 0.5,
+        roughness: 0.3,
+        metalness: 0.2
+      });
+
+      const heartsGroup = new THREE.Group();
+      for (let i = 0; i < 15; i++) {
+        const heart = new THREE.Mesh(geo, mat);
+        heart.position.set(
+          (Math.random() - 0.5) * 20,
+          (Math.random() - 0.5) * 15,
+          (Math.random() - 0.5) * 10 - 5
+        );
+        heart.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
+        heart.scale.setScalar(Math.random() * 0.3 + 0.1);
+        heart.userData = {
+          speedY: 0.01 + Math.random() * 0.02,
+          rotSpeed: (Math.random() - 0.5) * 0.02,
+        };
+        heartsGroup.add(heart);
+      }
+      return heartsGroup;
+    }
+
+    const hearts = createHearts();
+    scene.add(hearts);
 
     // ===== RAMO =====
     const bouquet = new THREE.Group();
     bouquet.position.y = 0.5;
     scene.add(bouquet);
 
-    // --- TALLOS ---
+    // --- TALLOS (Más gruesos y más largos) ---
     const stemMat = new THREE.MeshStandardMaterial({
       color: 0x4d7c0f,
       roughness: 0.8,
@@ -541,32 +581,32 @@
     const stemPositions = [
       [-0.8, 0, 0.1], [-0.4, 0, -0.2], [0, 0, 0.3],
       [0.4, 0, -0.1], [0.8, 0, 0.2], [0.2, 0, -0.4],
-      [-0.2, 0, 0.4], [0.6, 0, -0.3]
+      [-0.2, 0, 0.4], [0.6, 0, -0.3], [-0.6, 0, -0.3], [0.5, 0, 0.3]
     ];
 
     stemPositions.forEach(([x, , z], i) => {
       const stem = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.035, 0.05, 4.5, 6),
+        new THREE.CylinderGeometry(0.06, 0.08, 5.5, 8),
         stemMat
       );
-      stem.position.set(x * 0.6, -0.5, z);
-      stem.rotation.z = (Math.random() - 0.5) * 0.15;
-      stem.rotation.x = (Math.random() - 0.5) * 0.1;
+      stem.position.set(x * 0.8, -1.5, z);
+      stem.rotation.z = (Math.random() - 0.5) * 0.2;
+      stem.rotation.x = (Math.random() - 0.5) * 0.15;
       bouquet.add(stem);
 
       // Hojitas
       if (i % 2 === 0) {
         const leaf = new THREE.Mesh(
-          new THREE.SphereGeometry(0.12, 6, 4),
+          new THREE.SphereGeometry(0.18, 8, 6),
           new THREE.MeshStandardMaterial({ color: 0x65a30d, roughness: 0.7 })
         );
-        leaf.scale.set(1, 0.3, 0.6);
-        leaf.position.set(x * 0.6 + (Math.random() - 0.5) * 0.3, -1.5 - Math.random(), z);
+        leaf.scale.set(1, 0.25, 0.6);
+        leaf.position.set(x * 0.8 + (Math.random() - 0.5) * 0.4, -2.5 - Math.random(), z);
         bouquet.add(leaf);
       }
     });
 
-    // --- CONO DE PAPEL ---
+    // --- CONO DE PAPEL (Más ancho y alto) ---
     const paperMat = new THREE.MeshStandardMaterial({
       color: 0xfce4ec,
       roughness: 0.6,
@@ -574,24 +614,25 @@
       side: THREE.DoubleSide
     });
 
+    // Radio más ancho (3.2) y altura más alta (4.0)
     const paperCone = new THREE.Mesh(
-      new THREE.ConeGeometry(2.2, 3.2, 32, 1, true),
+      new THREE.ConeGeometry(3.2, 4.0, 32, 1, true),
       paperMat
     );
-    paperCone.position.y = 0.8;
+    paperCone.position.y = 0.5;
     paperCone.rotation.x = Math.PI;
     bouquet.add(paperCone);
 
-    // Borde del papel (toro)
+    // Borde del papel
     const paperRim = new THREE.Mesh(
-      new THREE.TorusGeometry(2.2, 0.06, 8, 32),
+      new THREE.TorusGeometry(3.2, 0.08, 8, 32),
       new THREE.MeshStandardMaterial({ color: 0xf9a8d4, roughness: 0.5 })
     );
-    paperRim.position.y = 0.8 + 1.6;
+    paperRim.position.y = 0.5 + 2.0;
     paperRim.rotation.x = Math.PI / 2;
     bouquet.add(paperRim);
 
-    // --- CINTA ---
+    // --- CINTA (Más centrada y gruesa) ---
     const ribbonMat = new THREE.MeshStandardMaterial({
       color: 0xec4899,
       roughness: 0.4,
@@ -600,45 +641,43 @@
       emissiveIntensity: 0.3
     });
 
+    // Cinta alrededor del papel (toro más ancho)
     const ribbon = new THREE.Mesh(
-      new THREE.TorusGeometry(1.1, 0.12, 12, 32),
+      new THREE.TorusGeometry(1.8, 0.15, 12, 32),
       ribbonMat
     );
-    ribbon.position.y = 1.2;
+    ribbon.position.y = 0.8;
     ribbon.rotation.x = Math.PI / 2;
     bouquet.add(ribbon);
 
-    // Lazo (dos esferas achatadas)
+    // Lazo (dos esferas achatadas y centradas)
     const bowL = new THREE.Mesh(
-      new THREE.SphereGeometry(0.4, 16, 12),
+      new THREE.SphereGeometry(0.5, 16, 12),
       ribbonMat
     );
     bowL.scale.set(1.4, 0.7, 0.5);
-    bowL.position.set(-0.55, 1.2, 1.1);
+    bowL.position.set(-0.6, 0.8, 1.8);
     bowL.rotation.z = 0.4;
     bouquet.add(bowL);
 
     const bowR = new THREE.Mesh(
-      new THREE.SphereGeometry(0.4, 16, 12),
+      new THREE.SphereGeometry(0.5, 16, 12),
       ribbonMat
     );
     bowR.scale.set(1.4, 0.7, 0.5);
-    bowR.position.set(0.55, 1.2, 1.1);
+    bowR.position.set(0.6, 0.8, 1.8);
     bowR.rotation.z = -0.4;
     bouquet.add(bowR);
 
     const bowCenter = new THREE.Mesh(
-      new THREE.SphereGeometry(0.18, 12, 10),
+      new THREE.SphereGeometry(0.2, 12, 10),
       new THREE.MeshStandardMaterial({ color: 0xbe185d, roughness: 0.3 })
     );
-    bowCenter.position.set(0, 1.2, 1.2);
+    bowCenter.position.set(0, 0.8, 1.9);
     bouquet.add(bowCenter);
 
-    // ===== PRODUCTOS DE MAQUILLAJE (FLORES) =====
+    // ===== PRODUCTOS DE MAQUILLAJE (FOTOS PLANAS) =====
     const products = [];
-
-    // Función para crear un producto 3D con esfera brillante
-    // Necesitas cargar la textura primero
     const textureLoader = new THREE.TextureLoader();
 
     function createProduct(config) {
@@ -647,41 +686,42 @@
       // Cargar la imagen como textura
       const texture = textureLoader.load(config.img);
 
-      // Esfera con la imagen aplicada
-      const sphere = new THREE.Mesh(
-        new THREE.SphereGeometry(config.radius, 32, 24),
-        new THREE.MeshStandardMaterial({
-          map: texture,           // 👈 la imagen en la esfera
-          roughness: 0.45,
-          metalness: 0.2,
-          emissive: config.color,
-          emissiveIntensity: 0.5
-        })
-      );
-      group.add(sphere);
+      // GEOMETRÍA CIRCULAR (foto plana)
+      const geometry = new THREE.CircleGeometry(config.radius, 64);
+      
+      // Material con la imagen (sin emisión)
+      const material = new THREE.MeshBasicMaterial({
+        map: texture,
+        transparent: true,
+        side: THREE.DoubleSide
+      });
+      
+      const mesh = new THREE.Mesh(geometry, material);
+      group.add(mesh);
 
-      // Anillo brillante alrededor
-      const ring = new THREE.Mesh(
-        new THREE.TorusGeometry(config.radius * 1.15, 0.04, 8, 32),
-        new THREE.MeshBasicMaterial({
-          color: 0xffffff,
-          transparent: true,
-          opacity: 0.6
-        })
-      );
-      ring.rotation.x = Math.PI / 2;
-      group.add(ring);
+      // Borde blanco brillante
+      const borderGeo = new THREE.RingGeometry(config.radius * 0.98, config.radius * 1.12, 64);
+      const borderMat = new THREE.MeshBasicMaterial({
+        color: 0xffffff,
+        transparent: true,
+        opacity: 0.85,
+        side: THREE.DoubleSide
+      });
+      const border = new THREE.Mesh(borderGeo, borderMat);
+      border.position.z = 0.01;
+      group.add(border);
 
-      // Halo brillante (sprite)
+      // Quitamos el halo fuerte para que no brille tanto
       const haloMat = new THREE.SpriteMaterial({
         color: config.color,
         transparent: true,
-        opacity: 0.1,
+        opacity: 0.05, // Casi invisible
         blending: THREE.AdditiveBlending,
         depthWrite: false
       });
       const halo = new THREE.Sprite(haloMat);
-      halo.scale.set(config.radius * 5, config.radius * 5, 1);
+      halo.scale.set(config.radius * 4.5, config.radius * 4.5, 1);
+      halo.position.z = -0.1;
       group.add(halo);
 
       group.position.copy(config.position);
@@ -701,23 +741,23 @@
     // Crear los 5 productos
     createProduct({
       key: 'eyeliner', color: 0x1e293b, radius: 0.55, img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQScuKW4e0OP2BD9Iy6qecR2nkLri5aEOsZnrWqE9gKXoYodSZgolMwZlw&s=10",
-      position: new THREE.Vector3(-1.7, 2.5, 0.6)
+      position: new THREE.Vector3(-2.2, 3.0, 0.6)
     });
     createProduct({
       key: 'mascara', color: 0xbe185d, radius: 0.62, img: "https://www.maybelline.pe/-/media/project/loreal/brand-sites/mny/americas/latam/tips-and-trends/eye-makeup-tutorials/our-best-mascara-for-sensitive-eyes/shot-1_800x1067.jpg?rev=4d0e7116af7d4b31a19ed18ec330e4ab",
-      position: new THREE.Vector3(-0.9, 3.2, -0.3)
+      position: new THREE.Vector3(-1.1, 3.8, -0.3)
     });
     createProduct({
       key: 'palette', color: 0xa855f7, radius: 0.75, img: "https://www.yanbal.com/medias/20013424-01.jpg?context=bWFzdGVyfGltYWdlc3wzNDM5OTR8aW1hZ2UvanBlZ3xhR1JsTDJnMU5pOHhNRE14T1RjeU1Ea3pPVFUxTUM4eU1EQXhNelF5TkY4d01TNXFjR2N8NjQ3OGI0MDgyZjYzN2UwMmM1NWNjNDNhODQ1MTI1NGQwMmZhYmE0Y2I5YzhiNjJhZGQyY2ZkYzMwMzk5ODM0NA",
-      position: new THREE.Vector3(0, 3.6, 0.2)
+      position: new THREE.Vector3(0, 4.3, 0.2)
     });
     createProduct({
       key: 'blush', color: 0xf472b6, radius: 0.62, img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBZCi17Hy772v4XK_2Il-_owkQ7R2yuXkiWXjaSKSIo-F6BPiqGsRkg4A&s=10",
-      position: new THREE.Vector3(0.9, 3.2, -0.3)
+      position: new THREE.Vector3(1.1, 3.8, -0.3)
     });
     createProduct({
       key: 'lipstick', color: 0xdc2626, radius: 0.55, img: "https://www.reneecosmetics.in/cdn/shop/files/Stay_Forever.jpg?v=1776235008&width=1946",
-      position: new THREE.Vector3(1.7, 2.5, 0.6)
+      position: new THREE.Vector3(2.2, 3.0, 0.6)
     });
 
     // ===== RAYCAST PARA CLICK =====
@@ -734,7 +774,6 @@
       const intersects = raycaster.intersectObjects(products, true);
 
       if (intersects.length > 0) {
-        // Encontrar el grupo padre
         let obj = intersects[0].object;
         while (obj.parent && !products.includes(obj)) obj = obj.parent;
         if (obj && products.includes(obj)) {
@@ -767,16 +806,16 @@
     renderer.domElement.addEventListener('pointermove', onPointerMove);
     renderer.domElement.addEventListener('pointerdown', onPointerDown);
 
-    // ===== POST-PROCESAMIENTO (BLOOM) =====
+    // ===== POST-PROCESAMIENTO (BLOOM MUY SUAVE) =====
     const composer = new EffectComposer(renderer);
     const renderPass = new RenderPass(scene, camera);
     composer.addPass(renderPass);
 
     const bloomPass = new UnrealBloomPass(
       new THREE.Vector2(window.innerWidth, window.innerHeight),
-      0.35,  // strength (antes 1.2) -> Brillo mucho más suave
-      0.4,   // radius (antes 0.6)   -> Halo más pequeño
-      0.85   // threshold (antes 0.15) -> Solo brilla lo MUY blanco
+      0.15,  // strength (Casi nada de brillo)
+      0.3,   // radius
+      0.95   // threshold (Solo lo muy blanco brilla)
     );
     composer.addPass(bloomPass);
 
@@ -815,7 +854,6 @@
         envelopeOverlay.classList.add('hidden');
         header.classList.add('visible');
         footer.classList.add('visible');
-        // Iniciar animación de entrada del ramo
         bouquet.scale.set(0.1, 0.1, 0.1);
         bouquet.userData.revealing = true;
         bouquet.userData.revealStart = performance.now();
@@ -843,18 +881,26 @@
     function animate() {
       requestAnimationFrame(animate);
       const t = clock.getElapsedTime();
-      const delta = clock.getDelta();
 
       // Rotar galaxia
       galaxy.rotation.y = t * 0.02;
       galaxy.rotation.x = Math.sin(t * 0.1) * 0.05;
 
+      // Animar corazones flotando
+      hearts.children.forEach(h => {
+        h.position.y += h.userData.speedY;
+        h.rotation.y += h.userData.rotSpeed;
+        h.rotation.x += h.userData.rotSpeed * 0.5;
+        if (h.position.y > 12) h.position.y = -12;
+      });
+
       // Flotar productos
       products.forEach((p, i) => {
         const ud = p.userData;
         p.position.y = ud.baseY + Math.sin(t * ud.floatSpeed + ud.floatPhase) * 0.15;
-        p.rotation.y = t * 0.3 + i;
-        p.rotation.x = Math.sin(t * 0.5 + i) * 0.15;
+        
+        // Hace que las fotos siempre miren a la cámara sin deformarse
+        p.lookAt(camera.position);
 
         // Escala en hover
         let targetScale = 1;
